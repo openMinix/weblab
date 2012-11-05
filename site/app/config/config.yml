@@ -1,0 +1,100 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+
+framework:
+    #esi:             ~
+    #translator:      { fallback: "%locale%" }
+    secret:          "%secret%"
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: "%kernel.debug%"
+    form:            true
+    csrf_protection: true
+    validation:      { enable_annotations: true }
+    templating:      { engines: ['twig'] } #assets_version: SomeVersionScheme
+    default_locale:  "%locale%"
+    trust_proxy_headers: false # Whether or not the Request object should trust proxy headers (X_FORWARDED_FOR/HTTP_CLIENT_IP)
+    session:         ~
+
+# Twig Configuration
+twig:
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
+
+# Assetic Configuration
+assetic:
+    debug:          "%kernel.debug%"
+    use_controller: false
+    bundles:        [ 'CcnaRoWeblabBundle' ]
+    java: /usr/bin/java
+    filters:
+        cssrewrite: ~
+        closure:
+            jar: "%kernel.root_dir%/Resources/java/compiler.jar"
+        cssembed:
+            jar: "%kernel.root_dir%/Resources/java/cssembed-0.4.5.jar"
+        yui_css:
+             jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar"
+        yui_js:
+             jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar"
+        less:
+             node: /opt/local/bin/node
+             node_paths: [/opt/local/lib/node_modules]
+        coffee:
+             bin: /usr/local/bin/coffee
+             node: /usr/local/bin/node
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver:   "%database_driver%"
+        host:     "%database_host%"
+        port:     "%database_port%"
+        dbname:   "%database_name%"
+        user:     "%database_user%"
+        password: "%database_password%"
+        charset:  UTF8
+
+    orm:
+        auto_generate_proxy_classes: "%kernel.debug%"
+        auto_mapping: true
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: "%mailer_transport%"
+    host:      "%mailer_host%"
+    username:  "%mailer_user%"
+    password:  "%mailer_password%"
+    spool:     { type: memory }
+
+mopa_bootstrap:
+    navbar: ~
+
+services:
+
+    mopa_bootstrap.menu_builder:
+          class: CcnaRo\WeblabBundle\Menu\NavbarMenuBuilder
+          arguments: ['@knp_menu.factory', '@security.context']
+
+    mopa_bootstrap.menu:
+        class: Knp\Menu\MenuItem # the service definition requires setting the class
+        factory_service: mopa_bootstrap.menu_builder
+        factory_method: createMainMenu
+        arguments: ["@request"]
+        scope: request # needed as we have the request as a dependency here
+        tags:
+            - { name: knp_menu.menu, alias: main } # The alias is what is used to retrieve the menu
+
+    mopa_bootstrap.example.navbar:
+        class: %mopa_bootstrap.navbar.generic%
+        arguments:
+            # first argument: a named array of menues:
+            - { leftmenu: @mopa_bootstrap.menu= }
+            # second argument: a named array of FormType Classes
+            - { searchform: CcnaRo\WeblabBundle\Form\SearchForm }
+            # third argument: a named array of options
+            - { title: "Weblab", titleRoute: "home", fixedTop: true, isFluid: false, template:MopaBootstrapBundle:Navbar:navbar.html.twig }
+        tags:
+            # The alias is used to retrieve the navbar in templates
+            - { name: mopa_bootstrap.navbar, alias: frontendNavbar }

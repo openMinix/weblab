@@ -1,0 +1,12 @@
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+
+ccna_ro_weblab:
+    resource: "@CcnaRoWeblabBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+# Internal routing configuration to handle ESI
+_internal:
+    resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
+    prefix:   /_internal

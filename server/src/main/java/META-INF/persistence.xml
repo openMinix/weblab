@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="1.0">
+	<persistence-unit name="openjpa">
+  		<provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
+    	<class>ro.ccna.netlab.models.Device</class>
+        <class>ro.ccna.netlab.models.DeviceGroup</class>
+        <class>ro.ccna.netlab.models.DeviceModel</class>
+        <class>ro.ccna.netlab.models.DeviceType</class>
+        <class>ro.ccna.netlab.models.Room</class>
+        <class>ro.ccna.netlab.models.User</class>
+        <class>ro.ccna.netlab.models.UserPublicKey</class>
+        <properties>
+            <property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema"/>
+            <property name="openjpa.ConnectionURL" value="jdbc:mysql://127.0.0.1/control"/>
+            <property name="openjpa.ConnectionDriverName" value="com.mysql.jdbc.Driver"/>
+            <property name="openjpa.ConnectionUserName" value="control"/>
+            <property name="openjpa.ConnectionPassword" value="eFAUu34UzfNrEmYQ"/>
+            <property name="openjpa.Log" value="DefaultLevel=WARN" />
+        </properties>
+	</persistence-unit>
+</persistence>

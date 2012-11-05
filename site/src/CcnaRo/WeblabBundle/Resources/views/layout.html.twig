@@ -1,0 +1,57 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}Weblab{% endblock %}
+
+{% block stylesheets %}
+
+    {% stylesheets filter='less,yui_css'
+        '@MopaBootstrapBundle/Resources/bootstrap/less/bootstrap.less'
+        '@CcnaRoWeblabBundle/Resources/private/css/jquery-ui-1.9.1.css'
+    %}
+        <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}" />
+    {% endstylesheets %}
+
+{% endblock %}
+
+{% block javascripts %}
+
+    <script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script type="text/javascript" src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+
+    {% javascripts filter='yui_js'
+        '@CcnaRoWeblabBundle/Resources/private/js/jquery-1.8.2.js'
+        '@CcnaRoWeblabBundle/Resources/private/js/jquery-ui-1.9.1.js'
+        '@MopaBootstrapBundle/Resources/bootstrap/js/bootstrap-affix.js'
+        '@MopaBootstrapBundle/Resources/bootstrap/js/bootstrap-button.js'
+        '@MopaBootstrapBundle/Resources/bootstrap/js/bootstrap-collapse.js'
+        '@MopaBootstrapBundle/Resources/bootstrap/js/bootstrap-modal.js'
+        '@MopaBootstrapBundle/Resources/bootstrap/js/bootstrap-scrollspy.js'
+        '@MopaBootstrapBundle/Resources/bootstrap/js/bootstrap-tooltip.js'
+        '@MopaBootstrapBundle/Resources/bootstrap/js/bootstrap-typeahead.js'
+        '@MopaBootstrapBundle/Resources/bootstrap/js/bootstrap-alert.js'
+        '@MopaBootstrapBundle/Resources/bootstrap/js/bootstrap-carousel.js'
+        '@MopaBootstrapBundle/Resources/bootstrap/js/bootstrap-dropdown.js'
+        '@MopaBootstrapBundle/Resources/bootstrap/js/bootstrap-popover.js'
+        '@MopaBootstrapBundle/Resources/bootstrap/js/bootstrap-tab.js'
+        '@MopaBootstrapBundle/Resources/bootstrap/js/bootstrap-transition.js'
+    %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+{% endblock %}
+
+{% block body %}
+
+    {% block navbar %}
+        {{ mopa_bootstrap_navbar('frontendNavbar') }}
+    {% endblock navbar %}
+
+    {% for key, flash in app.session.getFlashes() %}
+        <div class="flash-{{ key }} flash">
+            {{ flash }}
+        </div>
+    {% endfor %}
+
+    {% block content %}{% endblock %}
+
+{% endblock %}
